@@ -1,10 +1,19 @@
 // import {Action as RAction} from "redux";
 
-export class Action<Payload> {
-  private readonly type: string;
+import {AnyAction} from "redux";
+
+export class Action<Payload> implements AnyAction{
+
+  public static IsType<Payload>(action:any, actionType: new(..._:any[])=>Action<Payload>): action is Payload {
+    return action.type === actionType.name;
+  }
+
+  // @ts-ignore
+  public readonly type: string;
   // @ts-ignore
   private readonly payload: Payload; // stub; needed for Is() method's type-inference to work, for some reason
   constructor(payload: Payload) {
+    // @ts-ignore
     this.type = this.constructor.name;
     // this.payload = payload;
     Object.assign(this, payload);
@@ -14,8 +23,4 @@ export class Action<Payload> {
     return this.type === actionType.name;
     // return this instanceof actionType; // alternative
   }
-
-  // public static IsType<Payload>(action:RAction<any>, actionType: new(..._:any[])=>RAction): action is Payload {
-  //   return action.type == actionType.name;
-  // }
 }

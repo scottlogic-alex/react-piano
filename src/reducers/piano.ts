@@ -1,10 +1,19 @@
 // import {Action as RAction, Reducer} from "redux";
 import {Reducer} from "redux";
 import {IncreaseNumberAction} from "../actions";
-// import {Action} from "../actions/Action";
+import {Action} from "../actions/Action";
 
-const piano:Reducer = (state = [], action) => {
-  if (action.Is(IncreaseNumberAction)) {
+interface IState {
+  number: number
+}
+
+const initialState:IState = {
+  number: 1
+}
+
+const piano:Reducer<IState, Action<any>> = (state = initialState, action:Action<any>) => {
+  // if (action.Is(IncreaseNumberAction)) {
+  if (Action.IsType(action, IncreaseNumberAction)) {
     return {...state, number: state.number + action.amount}
   }
   return state
