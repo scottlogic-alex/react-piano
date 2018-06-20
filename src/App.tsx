@@ -4,14 +4,14 @@ import Keyboard from "./Keyboard";
 
 import logo from './logo.svg';
 
-interface MyProps {}
+// interface IProps {}
 
-interface MyState {
+interface IState {
   scaleDegree: number;
 }
 
-class App extends React.Component<MyProps, MyState> {
-  constructor(props:MyProps) {
+class App extends React.Component<{}, IState> {
+  constructor(props:{}) {
     super(props);
 
     this.state = {

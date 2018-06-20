@@ -1,4 +1,3 @@
-export enum PianoActionTypes {
-  Flourish,
-  GiveUp
-}
+import {Action} from "./Action";
+
+export class IncreaseNumberAction extends Action<{amount: number}> {}

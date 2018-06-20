@@ -1,14 +1,11 @@
 import * as React from 'react';
 
-interface KeyProps {
+interface IProps {
   scaleDegree: number;
 }
 
-interface MyState {
-}
-
-class Key extends React.Component<KeyProps, MyState> {
-  constructor(props:KeyProps) {
+class Key extends React.PureComponent<IProps, {}> {
+  constructor(props:IProps) {
     super(props);
 
     this.state = {

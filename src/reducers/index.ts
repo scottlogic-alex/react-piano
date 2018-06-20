@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import todos from './todos'
+import piano from "./piano"
 ​
 export default combineReducers({
-    todos
+    piano
 })
