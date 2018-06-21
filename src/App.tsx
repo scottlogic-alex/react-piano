@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect, Dispatch} from 'react-redux'
 import {IncreaseNumberAction} from "./actions/piano";
 import {IState} from "./reducers/index";
-// import './App.css';
+import './App.css';
 import Keyboard from "./Keyboard";
 import {CSSProperties} from "react";
 
@@ -19,10 +19,14 @@ interface IProps extends IMappedProps, IMappedState {}
 //   scaleDegree: number;
 // }
 
-const stylesheet: { [ _: string ]: CSSProperties } = {
+const style: { [ _: string ]: CSSProperties } = {
   container: {
-    color: "red",
-    textAlign: "center"
+  },
+  hide: {
+    display: "none"
+  },
+  stepper: {
+    cursor: "pointer"
   }
 }
 
@@ -43,9 +47,10 @@ class App extends React.PureComponent<IProps, {}> {
 
 
     return (
-      <div style={{...stylesheet.container}}>
+      <div style={{...style.container}}>
         <span>{this.props.number}</span>
-        <input type="button" onClick={this.props.increaseNumber}/>
+        <label className="stepper" htmlFor="increaseNumber">[+]</label>
+        <input style={{...style.hide}} id="increaseNumber" type="button" onClick={this.props.increaseNumber}/>
         <Keyboard scaleLength={this.props.number}/>
       </div>
     );
@@ -53,7 +58,6 @@ class App extends React.PureComponent<IProps, {}> {
 }
 
 const mapStateToProps = (state:IState):IMappedState => {
-  console.debug(state)
   return {
     number: state.piano.number
   }

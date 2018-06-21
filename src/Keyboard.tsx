@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Key from "./Key";
+import "./Keyboard.css"
 
 interface IProps {
   scaleLength: number
