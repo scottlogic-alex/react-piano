@@ -18,12 +18,25 @@
   font-size: large;
 }
 
+.keyCount {
+  color: blue;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
+.unselectable {
+  user-select: none;
+}
+
 .stepper {
+  @extend .unselectable;
+  $horizontalPad: 0.5em;
+  $verticalPad: 0.5em;
+  padding: $verticalPad $horizontalPad;
+  line-height: 1em + $verticalPad * 2;
 }
 
 .stepper:hover {

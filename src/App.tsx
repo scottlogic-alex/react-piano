@@ -1,17 +1,17 @@
 import * as React from 'react';
 import {connect, Dispatch} from 'react-redux'
-import {IncreaseNumberAction} from "./actions/piano";
+import {DecreaseKeysAction, IncreaseKeysAction} from "./actions/piano";
 import {IState} from "./reducers/index";
-import './App.css';
-import './Test.scss';
+import './App.scss';
 import Keyboard from "./Keyboard";
 import {CSSProperties} from "react";
 
 interface IMappedState {
-  number: number;
+  keyCount: number;
 }
 interface IMappedProps {
   increaseNumber: () => void;
+  decreaseNumber: () => void;
 }
 
 interface IProps extends IMappedProps, IMappedState {}
@@ -25,34 +25,24 @@ const style: { [ _: string ]: CSSProperties } = {
   },
   hide: {
     display: "none"
-  },
-  stepper: {
-    cursor: "pointer"
   }
 }
 
 class App extends React.PureComponent<IProps, {}> {
   constructor(props:IProps) {
     super(props);
-    // console.debug(props.dispatch)
-
-    // this.state = {
-    //   // populate state fields according to props fields
-    //   scaleDegree: 1
-    // };
   }
 
   public render() {
 
-    // var styles = { textAlign: "center" };
-
-
     return (
       <div style={{...style.container}}>
-        <span className="cool">{this.props.number}</span>
+        <span className="keyCount">{this.props.keyCount}</span>
         <label className="stepper" htmlFor="increaseNumber">[+]</label>
+        <label className="stepper" htmlFor="decreaseNumber">[-]</label>
         <input style={{...style.hide}} id="increaseNumber" type="button" onClick={this.props.increaseNumber}/>
-        <Keyboard keys={this.props.number} scaleLength={7}/>
+        <input style={{...style.hide}} id="decreaseNumber" type="button" onClick={this.props.decreaseNumber}/>
+        <Keyboard keys={this.props.keyCount} scaleLength={7}/>
       </div>
     );
   }
@@ -60,13 +50,14 @@ class App extends React.PureComponent<IProps, {}> {
 
 const mapStateToProps = (state:IState):IMappedState => {
   return {
-    number: state.piano.number
+    keyCount: state.piano.keyCount
   }
 }
 
 const mapDispatchToProps = (dispatch:Dispatch):IMappedProps => {
   return {
-    increaseNumber: () => dispatch(new IncreaseNumberAction({amount:1}))
+    increaseNumber: () => dispatch(new IncreaseKeysAction({})),
+    decreaseNumber: () => dispatch(new DecreaseKeysAction({})),
   }
 }
 

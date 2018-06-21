@@ -1,18 +1,21 @@
 import {Action, Reducer} from "redux";
-import {IncreaseNumberAction} from "../actions";
+import {DecreaseKeysAction, IncreaseKeysAction} from "../actions";
 import {Action as MyAction} from "../actions/Action";
 
 export interface IPianoState {
-  number: number
+  keyCount: number
 }
 
 const initialState:IPianoState = {
-  number: 8
+  keyCount: 8
 }
 
 const piano:Reducer<IPianoState, Action<any>> = (state = initialState, action:Action<any>) => {
-  if (MyAction.IsType(action, IncreaseNumberAction)) {
-    return {...state, number: state.number + action.amount}
+  if (MyAction.IsType(action, IncreaseKeysAction)) {
+    return {...state, keyCount: state.keyCount + 1}
+  }
+  if (MyAction.IsType(action, DecreaseKeysAction)) {
+    return {...state, keyCount: state.keyCount - 1}
   }
   return state
 }

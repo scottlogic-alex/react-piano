@@ -15,10 +15,14 @@
         "named-imports-order": "any"
       }
     },
-    "member-ordering": {
-      "options": {
-        "order": "any"
-      }
-    }
+    "max-classes-per-file": {
+      "options": [10]
+    },
+    "object-literal-sort-keys": false
+//    "member-ordering": {
+//      "options": {
+//        "order": "any"
+//      }
+//    }
   }
 }
