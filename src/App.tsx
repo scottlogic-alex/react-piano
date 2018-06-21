@@ -2,8 +2,9 @@ import * as React from 'react';
 import {connect, Dispatch} from 'react-redux'
 import {IncreaseNumberAction} from "./actions/piano";
 import {IState} from "./reducers/index";
-import './App.css';
+// import './App.css';
 import Keyboard from "./Keyboard";
+import {CSSProperties} from "react";
 
 interface IMappedState {
   number: number;
@@ -18,6 +19,13 @@ interface IProps extends IMappedProps, IMappedState {}
 //   scaleDegree: number;
 // }
 
+const stylesheet: { [ _: string ]: CSSProperties } = {
+  container: {
+    color: "red",
+    textAlign: "center"
+  }
+}
+
 class App extends React.PureComponent<IProps, {}> {
   constructor(props:IProps) {
     super(props);
@@ -31,8 +39,11 @@ class App extends React.PureComponent<IProps, {}> {
 
   public render() {
 
+    // var styles = { textAlign: "center" };
+
+
     return (
-      <div className="App">
+      <div style={{...stylesheet.container}}>
         <span>{this.props.number}</span>
         <input type="button" onClick={this.props.increaseNumber}/>
         <Keyboard scaleLength={this.props.number}/>
