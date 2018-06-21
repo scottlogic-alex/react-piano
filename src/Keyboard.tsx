@@ -5,8 +5,7 @@ interface IProps {
   scaleLength: number
 }
 
-class Keyboard extends React.PureComponent<IProps, {}> {
-  private readonly scaleDegrees:number[]
+class Keyboard extends React.Component<IProps, {}> {
   constructor(props:IProps) {
     super(props);
 
@@ -14,13 +13,13 @@ class Keyboard extends React.PureComponent<IProps, {}> {
       // populate state fields according to props fields
       // scaleDegrees: Array.from(Array(props.scaleLength).keys())
     // };
-    this.scaleDegrees = Array.from(Array(this.props.scaleLength).keys())
   }
 
   public render() {
+    const scaleDegrees = Array.from(Array(this.props.scaleLength).keys())
     return (
       <ol className="Keyboard">
-        {this.scaleDegrees.map(deg => <Key scaleDegree={deg} key={deg} />)}
+        {scaleDegrees.map(deg => <Key scaleDegree={deg} key={deg} />)}
       </ol>
   );
   }

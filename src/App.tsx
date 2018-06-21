@@ -18,7 +18,7 @@ interface IProps extends IMappedProps, IMappedState {}
 //   scaleDegree: number;
 // }
 
-class App extends React.Component<IProps, {}> {
+class App extends React.PureComponent<IProps, {}> {
   constructor(props:IProps) {
     super(props);
     // console.debug(props.dispatch)
@@ -33,9 +33,9 @@ class App extends React.Component<IProps, {}> {
 
     return (
       <div className="App">
-        <Keyboard scaleLength={7}/>
         <span>{this.props.number}</span>
         <input type="button" onClick={this.props.increaseNumber}/>
+        <Keyboard scaleLength={this.props.number}/>
       </div>
     );
   }
