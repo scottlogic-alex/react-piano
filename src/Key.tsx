@@ -1,22 +1,19 @@
 import * as React from 'react';
+import "./Key.scss"
 
 interface IProps {
-  scaleDegree: number;
+  label: string;
 }
 
 class Key extends React.PureComponent<IProps, {}> {
   constructor(props:IProps) {
     super(props);
-
-    this.state = {
-      // populate state fields according to props fields
-    };
   }
 
   public render() {
     return (
       <li className="Key">
-        <span>{this.props.scaleDegree}</span>
+        <span>{this.props.label}</span>
       </li>
     );
   }

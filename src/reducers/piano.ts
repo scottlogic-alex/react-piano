@@ -7,7 +7,7 @@ export interface IPianoState {
 }
 
 const initialState:IPianoState = {
-  number: 1
+  number: 8
 }
 
 const piano:Reducer<IPianoState, Action<any>> = (state = initialState, action:Action<any>) => {

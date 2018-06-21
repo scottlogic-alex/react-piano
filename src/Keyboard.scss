@@ -1,0 +1,7 @@
+ol.Keyboard {
+    display: flex; /* or inline-flex */
+    flex-direction: row;
+    li {
+        list-style-type: none;
+    }
+}

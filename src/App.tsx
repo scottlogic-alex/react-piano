@@ -52,7 +52,7 @@ class App extends React.PureComponent<IProps, {}> {
         <span className="cool">{this.props.number}</span>
         <label className="stepper" htmlFor="increaseNumber">[+]</label>
         <input style={{...style.hide}} id="increaseNumber" type="button" onClick={this.props.increaseNumber}/>
-        <Keyboard scaleLength={this.props.number}/>
+        <Keyboard keys={this.props.number} scaleLength={7}/>
       </div>
     );
   }

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Key from "./Key";
-import "./Keyboard.css"
+import "./Keyboard.scss"
 
 interface IProps {
+  keys: number,
   scaleLength: number
 }
 
@@ -17,10 +18,18 @@ class Keyboard extends React.Component<IProps, {}> {
   }
 
   public render() {
-    const scaleDegrees = Array.from(Array(this.props.scaleLength).keys())
+    const notes = Array.from(Array(this.props.keys).keys())
+    .map((index:number) => {
+      const labelOffset:number = 2;
+      return {
+        index,
+        label: String.fromCharCode(65 + ((index + labelOffset) % this.props.scaleLength)),
+        scaleDegree: index
+      }
+    })
     return (
       <ol className="Keyboard">
-        {scaleDegrees.map(deg => <Key scaleDegree={deg} key={deg} />)}
+        {notes.map(note => <Key label={note.label} key={note.index} />)}
       </ol>
   );
   }
