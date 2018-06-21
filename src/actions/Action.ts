@@ -1,8 +1,7 @@
 // import {Action as RAction} from "redux";
 
-import {AnyAction} from "redux";
 
-export class Action<Payload> implements AnyAction{
+export class Action<Payload>{
 
   public static IsType<Payload>(action:any, actionType: new(..._:any[])=>Action<Payload>): action is Payload {
     return action.type === actionType.name;
