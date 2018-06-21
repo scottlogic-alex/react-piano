@@ -3,6 +3,7 @@ import {connect, Dispatch} from 'react-redux'
 import {IncreaseNumberAction} from "./actions/piano";
 import {IState} from "./reducers/index";
 import './App.css';
+import './Test.scss';
 import Keyboard from "./Keyboard";
 import {CSSProperties} from "react";
 
@@ -48,7 +49,7 @@ class App extends React.PureComponent<IProps, {}> {
 
     return (
       <div style={{...style.container}}>
-        <span>{this.props.number}</span>
+        <span className="cool">{this.props.number}</span>
         <label className="stepper" htmlFor="increaseNumber">[+]</label>
         <input style={{...style.hide}} id="increaseNumber" type="button" onClick={this.props.increaseNumber}/>
         <Keyboard scaleLength={this.props.number}/>
