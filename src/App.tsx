@@ -1,27 +1,32 @@
 import * as React from 'react';
 import {connect, Dispatch} from 'react-redux'
 import {IncreaseNumberAction} from "./actions/piano";
+import {IState} from "./reducers/index";
 import './App.css';
 import Keyboard from "./Keyboard";
 
+interface IMappedState {
+  number: number;
+}
 interface IMappedProps {
   increaseNumber: () => void;
 }
-interface IProps extends IMappedProps {}
 
-interface IState {
-  scaleDegree: number;
-}
+interface IProps extends IMappedProps, IMappedState {}
 
-class App extends React.Component<IProps, IState> {
+// interface IState {
+//   scaleDegree: number;
+// }
+
+class App extends React.Component<IProps, {}> {
   constructor(props:IProps) {
     super(props);
     // console.debug(props.dispatch)
 
-    this.state = {
-      // populate state fields according to props fields
-      scaleDegree: 1
-    };
+    // this.state = {
+    //   // populate state fields according to props fields
+    //   scaleDegree: 1
+    // };
   }
 
   public render() {
@@ -29,9 +34,17 @@ class App extends React.Component<IProps, IState> {
     return (
       <div className="App">
         <Keyboard scaleLength={7}/>
+        <span>{this.props.number}</span>
         <input type="button" onClick={this.props.increaseNumber}/>
       </div>
     );
+  }
+}
+
+const mapStateToProps = (state:IState):IMappedState => {
+  console.debug(state)
+  return {
+    number: state.piano.number
   }
 }
 
@@ -42,6 +55,6 @@ const mapDispatchToProps = (dispatch:Dispatch):IMappedProps => {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);
