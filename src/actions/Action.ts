@@ -1,6 +1,3 @@
-// import {Action as RAction} from "redux";
-
-
 export class Action<Payload>{
 
   public static IsType<Payload>(action:any, actionType: new(..._:any[])=>Action<Payload>): action is Payload {
@@ -16,5 +13,8 @@ export class Action<Payload>{
     this.type = this.constructor.name;
     // this.payload = payload;
     Object.assign(this, payload);
+
+    // make our object look like a plain object, to stop Redux complaining
+    Object.setPrototypeOf(this, Object.getPrototypeOf({}));
   }
 }
