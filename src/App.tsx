@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect, Dispatch} from 'react-redux'
-import {DecreaseKeysAction, IncreaseKeysAction} from "./actions/piano";
+import {IncreaseKeysAction} from "./actions/piano";
 import {IState} from "./reducers/index";
 import './App.scss';
 import Keyboard from "./Keyboard";
@@ -56,8 +56,8 @@ const mapStateToProps = (state:IState):IMappedState => {
 
 const mapDispatchToProps = (dispatch:Dispatch):IMappedProps => {
   return {
-    increaseNumber: () => dispatch(new IncreaseKeysAction({})),
-    decreaseNumber: () => dispatch(new DecreaseKeysAction({})),
+    increaseNumber: () => dispatch(new IncreaseKeysAction({amount:1})),
+    decreaseNumber: () => dispatch(new IncreaseKeysAction({amount:-1})),
   }
 }
 
