@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {connect, Dispatch} from 'react-redux'
-import {IncreaseKeysAction} from "./actions/piano";
-import {IState} from "./reducers/index";
+import {IState} from "./reducers";
 import './App.scss';
 import Keyboard from "./Keyboard";
 import {CSSProperties} from "react";
+import {AddVoiceAction, RemoveVoiceAction} from "./actions/audio";
 
 interface IMappedState {
   keyCount: number;
@@ -15,10 +15,6 @@ interface IMappedProps {
 }
 
 interface IProps extends IMappedProps, IMappedState {}
-
-// interface IState {
-//   scaleDegree: number;
-// }
 
 const style: { [ _: string ]: CSSProperties } = {
   container: {
@@ -42,7 +38,7 @@ class App extends React.PureComponent<IProps, {}> {
         <label className="stepper" htmlFor="decreaseNumber">[-]</label>
         <input style={{...style.hide}} id="increaseNumber" type="button" onClick={this.props.increaseNumber}/>
         <input style={{...style.hide}} id="decreaseNumber" type="button" onClick={this.props.decreaseNumber}/>
-        <Keyboard keys={this.props.keyCount} scaleLength={7}/>
+        <Keyboard/>
       </div>
     );
   }
@@ -50,14 +46,14 @@ class App extends React.PureComponent<IProps, {}> {
 
 const mapStateToProps = (state:IState):IMappedState => {
   return {
-    keyCount: state.piano.keyCount
+    keyCount: state.audio.keys.length
   }
 }
 
 const mapDispatchToProps = (dispatch:Dispatch):IMappedProps => {
   return {
-    increaseNumber: () => dispatch(new IncreaseKeysAction({amount:1})),
-    decreaseNumber: () => dispatch(new IncreaseKeysAction({amount:-1})),
+    increaseNumber: () => dispatch(new AddVoiceAction({})),
+    decreaseNumber: () => dispatch(new RemoveVoiceAction({})),
   }
 }
 

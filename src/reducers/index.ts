@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux'
 import { piano, IPianoState }  from "./piano"
+import {audio, IPianoKeyboardState} from "./audio";
+
 ​
 export default combineReducers({
-    piano
+  piano,
+  audio
 })
 
 export interface IState {
-  piano: IPianoState
+  piano: IPianoState,
+  audio: IPianoKeyboardState
 }
