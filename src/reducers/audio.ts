@@ -85,7 +85,7 @@ function* scaleGenerator(chromaticsInScale:boolean[], labelOffset:number) {
         label: String.fromCharCode(65 + ((scaleDegree + labelOffset) % scaleLength))
       }
       yield scaleKey;
-      if (scaleDegree++ >= scaleLength) {
+      if (++scaleDegree >= scaleLength) {
         return
       }
     }
@@ -106,7 +106,7 @@ const majorScale:IScaleKey[] = [...scaleGenerator(majorScaleDegrees, 2)]
 //   }
 // }
 
-const getFrequency = (index:number, octave: number, scaleLength:number, relativeFrequency:number) => {
+const getFrequency = (octave: number, scaleLength:number, relativeFrequency:number) => {
   // C above concert A, equal temperament
   // 440*(2^(1/12))^3
   const base = 523.25
@@ -121,8 +121,8 @@ function* constructKey() {
     const octave = Math.floor(index/majorScale.length)
     const pianoKey:IPianoKey = {
       label: scaleKey.label,
-      uniqueIx: majorScale.length**octave + scaleKey.scaleDegree,
-      voice: newVoice(globalAudioContext, getFrequency(index, octave, majorScale.length, scaleKey.frequency))
+      uniqueIx: majorScale.length*octave + scaleKey.scaleDegree,
+      voice: newVoice(globalAudioContext, getFrequency(octave, majorScale.length, scaleKey.frequency))
     }
     yield pianoKey
     index++
@@ -136,14 +136,10 @@ const keys:IPianoKey[] = []
 const keyIterator = constructKey()
 
 const getKeysTo = (limit:number) => {
-  const preCalculated = keys.slice(0, Math.min(keys.length, limit));
-  if (preCalculated.length === limit) {
-    return preCalculated
-  }
-  for (let i=preCalculated.length; i<limit; i++) {
+  for (let i=keys.length; i<limit; i++) {
     keys.push(keyIterator.next().value)
   }
-  return keys
+  return keys.slice(0, limit)
 }
 
 // const constructMajorScale = () => (_.times(majorScale.length+1,
@@ -161,7 +157,12 @@ const audio:Reducer<IPianoKeyboardState, Action<any>> = (state = initialState, a
     return {...state, keys: getKeysTo(state.keys.length + 1) }
   }
   if (MyAction.IsType(action, RemoveVoiceAction)) {
-    return {...state, keys: state.keys.slice(0, -1)}
+    if (!state.keys.length) {
+      return state
+    }
+    // const removedKey:IPianoKey = state.keys.slice(-1)[0]
+    // removedKey.voice.oscillator.stop()
+    return {...state, keys: getKeysTo(state.keys.length - 1)}
   }
   return state
 }

@@ -5,7 +5,7 @@ interface IProps {
   label: string;
 }
 
-class Key extends React.PureComponent<IProps, {}> {
+class Key extends React.Component<IProps, {}> {
   constructor(props:IProps) {
     super(props);
   }
