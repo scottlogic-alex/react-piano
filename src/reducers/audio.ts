@@ -7,12 +7,6 @@ export interface IVoice {
   oscillator: OscillatorNode
 }
 
-// export interface IChromaticKey {
-//   chromaticDegree: number,
-//   chromaticIndex: number,
-//   frequency: number
-// }
-
 export interface IScaleKey {
   label: string,
   scaleDegree: number,
@@ -43,20 +37,6 @@ const newVoice = (audioContext: AudioContext, frequency:number):IVoice => {
 }
 
 const chromaticDegrees = 12
-
-// /**
-//  * equal temperament
-//  * @param index
-//  */
-// const calculateFrequency = (index:number) => {
-//   const octave = Math.floor(index/chromaticDegrees)
-//   const relativeFreq = (2**(1/chromaticDegrees))**index
-//   // C above concert A, equal temperament
-//   // 440*(2^(1/12))^3
-//   const base = 523.25
-//   // console.debug(octave, relativeFreq, base)
-//   return 2**octave*base*relativeFreq
-// }
 
 const calculateRelativeFrequencyChromatic = (index: number) => (2**(1/chromaticDegrees))**index
 
@@ -96,16 +76,6 @@ const majorScaleDegrees = [true, false, true, false, true, true, false, true, fa
 const majorScaleLength = majorScaleDegrees.filter(_.identity).length
 const majorScale:IScaleKey[] = [...scaleGenerator(majorScaleDegrees, 2)]
 
-// const constructPianoKey = (chromaticKey: IChromaticKey, index:number) => {
-//   const labelOffset:number = 2;
-//   return {
-//     ...chromaticKey,
-//     scaleDegree: index % majorScale.length,
-//     label: String.fromCharCode(65 + ((index + labelOffset) % majorScale.length)),
-//     voice: newVoice(globalAudioContext, chromaticKey.frequency)
-//   }
-// }
-
 const getFrequency = (octave: number, scaleLength:number, relativeFrequency:number) => {
   // C above concert A, equal temperament
   // 440*(2^(1/12))^3
@@ -129,9 +99,6 @@ function* constructKey() {
   }
 }
 
-// const majorScale:IPianoKey[] = []
-// const majorScaleIterator = scaleGenerator(majorScaleDegrees)
-
 const keys:IPianoKey[] = []
 const keyIterator = constructKey()
 
@@ -141,11 +108,6 @@ const getKeysTo = (limit:number) => {
   }
   return keys.slice(0, limit)
 }
-
-// const constructMajorScale = () => (_.times(majorScale.length+1,
-//     // @ts-ignore
-//     scaleGenerator(majorScale)) as IChromaticKey[])
-//     .map(constructPianoKey)
 
 const initialState:IPianoKeyboardState = {
   context: globalAudioContext,
