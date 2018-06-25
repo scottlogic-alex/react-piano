@@ -30,7 +30,7 @@ const newVoice = (audioContext: AudioContext, frequency:number):IVoice => {
   const osc = audioContext.createOscillator()
 
   console.debug(frequency)
-  osc.frequency.setValueAtTime(3000, audioContext.currentTime);
+  osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
   // osc.frequency.value = frequency
   osc.connect(audioContext.destination);
   return { oscillator: osc };
