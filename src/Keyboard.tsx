@@ -24,7 +24,7 @@ class Keyboard extends React.Component<IProps, {}> {
       return {
         index,
         label: String.fromCharCode(65 + ((index + labelOffset) % this.props.scaleLength)),
-        scaleDegree: index
+        scaleDegree: index % this.props.scaleLength
       }
     })
     return (
