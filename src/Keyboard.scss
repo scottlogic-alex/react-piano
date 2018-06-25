@@ -1,7 +1,18 @@
 ol.Keyboard {
     display: flex; /* or inline-flex */
     flex-direction: row;
+    flex-flow: wrap;
+    //border: 1px solid black;
     li {
+        padding-top: 0.25em;
+        user-select: none;
+        cursor: pointer;
+        border: 1px solid black;
+        margin: -1px 0 0 -1px;
         list-style-type: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
