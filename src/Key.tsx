@@ -4,20 +4,22 @@ import {connect, Dispatch} from "react-redux";
 import {StartVoiceAction, StopVoiceAction} from "./actions";
 import {IPianoKey} from "./reducers/audio";
 
-interface IMappedState {
+interface IStateProps {
 }
-interface IMappedProps {
+interface IDispatchProps {
   startPlaying: () => void;
   stopPlaying: () => void;
 }
 
-interface IProps extends IMappedProps, IMappedState {
+interface IOwnProps {
   myKey:IPianoKey,
   keyIx:number
 }
 
-class Key extends React.Component<IProps, {}> {
-  constructor(props:IProps) {
+type IAllProps = IStateProps&IDispatchProps&IOwnProps
+
+class Key extends React.Component<IAllProps, {}> {
+  constructor(props:IAllProps) {
     super(props);
   }
 
@@ -36,10 +38,10 @@ class Key extends React.Component<IProps, {}> {
 //   }
 // }
 
-const mapDispatchToProps = (dispatch:Dispatch, ownProps:IProps):IMappedProps => {
+const mapDispatchToProps = (dispatch:Dispatch, ownProps:IOwnProps):IDispatchProps => {
   return {
-    startPlaying: () => dispatch(new StartVoiceAction({ix: ownProps.keyIx})),
-    stopPlaying: () => dispatch(new StopVoiceAction({ix: ownProps.keyIx})),
+    startPlaying: () => {dispatch(new StartVoiceAction({ix: ownProps.keyIx}))},
+    stopPlaying: () => {dispatch(new StopVoiceAction({ix: ownProps.keyIx}))},
   }
 }
 
