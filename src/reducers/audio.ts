@@ -9,6 +9,11 @@ export interface IScaleKey {
   frequency: number
 }
 
+export interface IImmutablePianoKey {
+  label: string,
+  frequency: number
+}
+
 export interface IPianoKey {
   label: string,
   frequency: number,
@@ -42,8 +47,8 @@ function* scaleGenerator(chromaticsInScale:boolean[], labelOffset:number) {
   let scaleDegree = 0
   for (const chromatic of chromaticsGenerator()) {
     if (chromaticsInScale[chromatic.chromaticDegree % chromaticsInScale.length]) {
-      const scaleKey:IScaleKey = {
-        scaleDegree,
+      const scaleKey:IImmutablePianoKey = {
+        // scaleDegree,
         frequency: chromatic.frequency,
         label: String.fromCharCode(65 + ((scaleDegree + labelOffset) % scaleLength))
       }
@@ -57,7 +62,7 @@ function* scaleGenerator(chromaticsInScale:boolean[], labelOffset:number) {
 
 const majorScaleDegrees = [true, false, true, false, true, true, false, true, false, true, false, true]
 const majorScaleLength = majorScaleDegrees.filter(_.identity).length
-const majorScale:IScaleKey[] = [...scaleGenerator(majorScaleDegrees, 2)]
+const majorScale:IImmutablePianoKey[] = [...scaleGenerator(majorScaleDegrees, 2)]
 
 const getFrequency = (octave: number, scaleLength:number, relativeFrequency:number) => {
   // C above concert A, equal temperament
@@ -73,42 +78,52 @@ function* constructKey() {
     const scaleKey = majorScale[index % majorScale.length]
     const octave = Math.floor(index/majorScale.length)
     const frequency = getFrequency(octave, majorScale.length, scaleKey.frequency)
-    const pianoKey:IPianoKey = {
+    const pianoKey:IImmutablePianoKey = {
       label: scaleKey.label,
       // uniqueIx: majorScale.length*octave + scaleKey.scaleDegree,
-      frequency,
-      isPlaying: false
+      frequency
     }
     yield pianoKey
     index++
   }
 }
 
-const keys:IPianoKey[] = []
+const constructMutableKey = (key:IImmutablePianoKey):IPianoKey => {
+  return {
+    ...key,
+    isPlaying: false
+  }
+}
+
+const keys:IImmutablePianoKey[] = []
 const keyIterator = constructKey()
 
-const getKeysTo = (limit:number) => {
+const generateKeysTo = (limit:number) => {
   for (let i=keys.length; i<limit; i++) {
     keys.push(keyIterator.next().value)
   }
   return keys.slice(0, limit)
 }
 
+generateKeysTo(majorScaleLength+1)
+
 const initialState:IPianoKeyboardState = {
-  keys: getKeysTo(majorScaleLength+1)
+  keys: keys.map(constructMutableKey)
 }
+
+// initialState.keys = getKeysTo(majorScaleLength+1)
 
 const audio:Reducer<IPianoKeyboardState, Action<any>> = (state = initialState, action:Action<any>) => {
   if (MyAction.IsType(action, AddVoiceAction)) {
-    return {...state, keys: getKeysTo(state.keys.length + 1) }
+    generateKeysTo(state.keys.length + 1)
+    return {...state, keys: [...state.keys, constructMutableKey(keys[state.keys.length])] }
   }
   if (MyAction.IsType(action, RemoveVoiceAction)) {
     if (!state.keys.length) {
       return state
     }
     // const removedKey:IPianoKey = state.keys.slice(-1)[0]
-    // removedKey.voice.oscillator.stop()
-    return {...state, keys: getKeysTo(state.keys.length - 1)}
+    return {...state, keys: state.keys.slice(0, -1)}
   }
   if (MyAction.IsType(action, StartVoiceAction)) {
     return {...state, keys: _.tap([...state.keys], (theKeys:IPianoKey[]) => {

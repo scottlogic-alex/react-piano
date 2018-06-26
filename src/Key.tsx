@@ -24,8 +24,13 @@ class Key extends React.Component<IAllProps, {}> {
   }
 
   public render() {
+    const clickHandler = () => {
+      return this.props.myKey.isPlaying
+        ? this.props.stopPlaying()
+        : this.props.startPlaying()
+    }
     return (
-      <li className="Key" onClick={this.props.startPlaying}>
+      <li className="Key" onClick={clickHandler}>
         <span>{this.props.myKey.label}</span>
       </li>
     );

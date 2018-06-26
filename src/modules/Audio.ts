@@ -2,6 +2,7 @@ import {IPianoKey} from "../reducers/audio";
 
 interface IKeyState {
   oscillator: OscillatorNode,
+  frequency: number,
   isPlaying: boolean
 }
 
@@ -40,13 +41,15 @@ export default class Audio {
 
   private constructKey(externalKey: IPianoKey):IKeyState {
     return {
+      frequency: externalKey.frequency,
       oscillator: this.constructOscillator(externalKey.frequency),
       isPlaying: false
     }
   }
 
   private removeKey():void {
-    this.internalKeys.pop()
+    const removedKey = this.internalKeys.pop()
+    removedKey!.oscillator.disconnect()
   }
 
   private reconcileDifferences(externalKey: IPianoKey, internalKey: IKeyState):void {
@@ -66,6 +69,12 @@ export default class Audio {
 
   private stopPlaying(internalKey: IKeyState):void {
     internalKey.oscillator.stop()
+    internalKey.oscillator.disconnect()
+
+    // a stopped oscillator can never be started again, so we must build a new, unstarted one
+    internalKey.oscillator = this.constructOscillator(internalKey.frequency)
+    internalKey.oscillator.connect(this.audioContext.destination);
+
     internalKey.isPlaying = false
   }
 
