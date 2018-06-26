@@ -3,10 +3,6 @@ import {Action as MyAction} from "../actions/Action";
 import {AddVoiceAction, RemoveVoiceAction} from "../actions";
 import * as _ from "lodash";
 
-export interface IVoice {
-  oscillator: OscillatorNode
-}
-
 export interface IScaleKey {
   label: string,
   scaleDegree: number,
@@ -15,25 +11,12 @@ export interface IScaleKey {
 
 export interface IPianoKey {
   label: string,
-  uniqueIx: number,
-  voice: IVoice
+  frequency: number,
+  isPlaying: boolean
 }
-
-const globalAudioContext = new ((window as any).AudioContext || (window as any).webkitAudioContext)()
 
 export interface IPianoKeyboardState {
-  keys: IPianoKey[],
-  context: AudioContext
-}
-
-const newVoice = (audioContext: AudioContext, frequency:number):IVoice => {
-  const osc = audioContext.createOscillator()
-
-  console.debug(frequency)
-  osc.frequency.setValueAtTime(frequency, audioContext.currentTime);
-  // osc.frequency.value = frequency
-  osc.connect(audioContext.destination);
-  return { oscillator: osc };
+  keys: IPianoKey[]
 }
 
 const chromaticDegrees = 12
@@ -89,10 +72,12 @@ function* constructKey() {
   while(true) {
     const scaleKey = majorScale[index % majorScale.length]
     const octave = Math.floor(index/majorScale.length)
+    const frequency = getFrequency(octave, majorScale.length, scaleKey.frequency)
     const pianoKey:IPianoKey = {
       label: scaleKey.label,
-      uniqueIx: majorScale.length*octave + scaleKey.scaleDegree,
-      voice: newVoice(globalAudioContext, getFrequency(octave, majorScale.length, scaleKey.frequency))
+      // uniqueIx: majorScale.length*octave + scaleKey.scaleDegree,
+      frequency,
+      isPlaying: false
     }
     yield pianoKey
     index++
@@ -110,7 +95,6 @@ const getKeysTo = (limit:number) => {
 }
 
 const initialState:IPianoKeyboardState = {
-  context: globalAudioContext,
   keys: getKeysTo(majorScaleLength+1)
 }
 
