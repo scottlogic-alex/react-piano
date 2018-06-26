@@ -1,6 +1,6 @@
 import {Action, Reducer} from "redux";
 import {Action as MyAction} from "../actions/Action";
-import {AddVoiceAction, RemoveVoiceAction} from "../actions";
+import {AddVoiceAction, RemoveVoiceAction, StartVoiceAction, StopVoiceAction} from "../actions";
 import * as _ from "lodash";
 
 export interface IScaleKey {
@@ -109,6 +109,20 @@ const audio:Reducer<IPianoKeyboardState, Action<any>> = (state = initialState, a
     // const removedKey:IPianoKey = state.keys.slice(-1)[0]
     // removedKey.voice.oscillator.stop()
     return {...state, keys: getKeysTo(state.keys.length - 1)}
+  }
+  if (MyAction.IsType(action, StartVoiceAction)) {
+    return {...state, keys: _.tap([...state.keys], (theKeys:IPianoKey[]) => {
+        // @ts-ignore
+        theKeys[action.ix].isPlaying = true
+        return theKeys
+      })}
+  }
+  if (MyAction.IsType(action, StopVoiceAction)) {
+    return {...state, keys: _.tap([...state.keys], (theKeys:IPianoKey[]) => {
+        // @ts-ignore
+        theKeys[action.ix].isPlaying = false
+        return theKeys
+      })}
   }
   return state
 }

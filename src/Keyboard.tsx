@@ -20,7 +20,7 @@ class Keyboard extends React.Component<IProps, {}> {
   public render() {
     return (
       <ol className="Keyboard">
-        {this.props.keys.map((key:IPianoKey, ix:number) => <Key label={key.label} key={ix} />)}
+        {this.props.keys.map((key:IPianoKey, ix:number) => <Key myKey={key} keyIx={ix} key={ix} />)}
       </ol>
   );
   }
